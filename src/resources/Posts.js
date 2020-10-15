@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Post from './Post';
+import { StickyContext } from './StickyComp';
 
-const Posts = () => (
-  <div>
-    <Post></Post>
-    <Post></Post>
-  </div>
-);
+const Posts = () => {
+  const { state } = useContext(StickyContext);
+  const postsComp = state.posts.map((p) => (
+    <Post key={p.id} value={p}></Post>
+  ));
+
+  return <div>{postsComp}</div>;
+};
 
 export default Posts;

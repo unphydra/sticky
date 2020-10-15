@@ -2,21 +2,23 @@ import React from 'react';
 import AddComment from './AddComment';
 import Comments from './Comments';
 
-const Profile = () => (
-  <div
+const Profile = ({ imageUrl }) => (
+  <img
     style={{
       height: '28px',
       width: '28px',
       border: '1px solid black',
       borderRadius: '50%',
     }}
-  ></div>
+    src={imageUrl}
+    alt=""
+  ></img>
 );
 
-const Name = () => (
+const Name = ({ value: { name, heading } }) => (
   <div style={{ marginLeft: '10px' }}>
-    <div>Rivu</div>
-    <div style={{ fontSize: '12px' }}>Durlovpur</div>
+    <div>{name}</div>
+    <div style={{ fontSize: '12px' }}>{heading}</div>
   </div>
 );
 
@@ -52,7 +54,9 @@ const Option = () => (
   </svg>
 );
 
-const PostBody = () => <div style={{ height: '400px' }}></div>;
+const PostBody = ({ value }) => (
+  <img style={{ width: '598px' }} src={value} alt=""></img>
+);
 
 const LikeButton = () => (
   <svg
@@ -108,12 +112,8 @@ const IconBar = () => (
   </div>
 );
 
-const Likes = () => (
-  <div style={{ margin: '5px 0px', fontWeight: '600' }}>15 Likes</div>
-);
-
-const Post = () => (
-  <div style={{ border: '1px solid', marginBottom: '25px' }}>
+const Header = ({ value: { profile, heading } }) => {
+  return (
     <header
       style={{
         display: 'flex',
@@ -123,16 +123,26 @@ const Post = () => (
       }}
     >
       <div style={{ display: 'flex' }}>
-        <Profile></Profile>
-        <Name></Name>
+        <Profile imageUrl={profile.profilePicture}></Profile>
+        <Name value={{ name: profile.name, heading }}></Name>
       </div>
       <Option></Option>
     </header>
-    <PostBody></PostBody>
-    <footer style={{ borderTop: '1px solid', padding: '10px' }}>
+  );
+};
+
+const Likes = ({ value }) => (
+  <div style={{ margin: '5px 0px', fontWeight: '600' }}>{value} Likes</div>
+);
+
+const Post = ({ value }) => (
+  <div style={{ border: '1px solid', marginBottom: '25px' }}>
+    <Header value={value}></Header>
+    <PostBody value={value.image}></PostBody>
+    <footer style={{ padding: '10px' }}>
       <IconBar></IconBar>
-      <Likes></Likes>
-      <Comments></Comments>
+      <Likes value={value.likes}></Likes>
+      <Comments value={value.comments}></Comments>
     </footer>
     <AddComment></AddComment>
   </div>

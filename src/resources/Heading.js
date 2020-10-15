@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { StickyContext } from './StickyComp';
 
 const AppName = () => <div style={{ fontSize: '20px' }}>Sticky</div>;
 const Search = () => <input placeholder="🔍search"></input>;
@@ -49,16 +50,21 @@ const AddPost = () => (
   </svg>
 );
 
-const Profile = () => (
-  <div
-    style={{
-      height: '22px',
-      width: '22px',
-      border: '1px solid black',
-      borderRadius: '50%',
-    }}
-  ></div>
-);
+const Profile = () => {
+  const { state } = useContext(StickyContext);
+  return (
+    <img
+      style={{
+        height: '22px',
+        width: '22px',
+        border: '1px solid black',
+        borderRadius: '50%',
+      }}
+      src={state.profile.profilePicture}
+      alt=""
+    ></img>
+  );
+};
 
 const NavBar = () => (
   <div

@@ -1,21 +1,22 @@
 import React from 'react';
 
-const Name = () => <div style={{ fontWeight: '600' }}>Rivu</div>;
+const Name = ({ name }) => <div style={{ fontWeight: '600' }}>{name}</div>;
 
-const Text = () => <div style={{ marginLeft: '5px' }}>Nice picture</div>;
+const Text = ({ text }) => <div style={{ marginLeft: '5px' }}>{text}</div>;
 
-const Comment = () => (
+const Comment = ({ value }) => (
   <div style={{ display: 'flex' }}>
-    <Name></Name>
-    <Text></Text>
+    <Name name={value.profile.name}></Name>
+    <Text text={value.comment}></Text>
   </div>
 );
 
-const Comments = () => (
-  <div>
-    <Comment></Comment>
-    <Comment></Comment>
-  </div>
-);
+const Comments = ({ value }) => {
+  const commentsComp = value.map((c) => (
+    <Comment key={c.id} value={c}></Comment>
+  ));
+
+  return <div>{commentsComp}</div>;
+};
 
 export default Comments;
