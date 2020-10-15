@@ -15,7 +15,6 @@ const Search = () => <input placeholder="🔍search"></input>;
 const Home = () => (
   <svg
     aria-label="Home"
-    class="_8-yf5 "
     fill="#262626"
     height="22"
     viewBox="0 0 48 48"
@@ -37,7 +36,7 @@ const Message = () => (
   </svg>
 );
 
-const Post = () => (
+const AddPost = () => (
   <svg
     height="22"
     width="22"
@@ -70,7 +69,7 @@ const NavBar = () => (
       justifyContent: 'space-around',
     }}
   >
-    <Post></Post>
+    <AddPost></AddPost>
     <Home></Home>
     <Message></Message>
     <Profile></Profile>
@@ -85,6 +84,7 @@ const Heading = (props) => (
       justifyContent: 'space-around',
       padding: '5px',
       borderBottom: '1px solid',
+      marginBottom: '15px',
     }}
   >
     <AppName></AppName>
