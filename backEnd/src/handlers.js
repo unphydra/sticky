@@ -1,63 +1,75 @@
-const data = {
-  profile: {
-    name: 'rivu',
-    profilePicture: '/images/profile.jpg',
-  },
-  posts: [
-    {
-      profile: {
-        name: 'rivu',
-        profilePicture: '/images/profile.jpg',
-      },
-      heading: 'Durlovpur',
-      image: '/images/nature.jpg',
-      likes: 15,
-      id: 1,
-      comments: [
-        {
-          profile: { name: 'rivu', profilePicture: '/images/profile.jpg' },
-          comment: 'nice picture',
-          id: 1,
-        },
-        {
-          profile: { name: 'rivu', profilePicture: '/images/profile.jpg' },
-          comment: 'nice picture2',
-          id: 2,
-        },
-      ],
-    },
-    {
-      profile: {
-        name: 'Layek',
-        profilePicture: '/images/profile.jpg',
-      },
-      heading: 'Bankura',
-      image: '/images/nature2.jpeg',
-      likes: 20,
-      id: 2,
-      comments: [
-        {
-          profile: { name: 'rivu', profilePicture: '/images/profile.jpg' },
-          comment: 'nice picture',
-          id: 3,
-        },
-        {
-          profile: { name: 'rivu', profilePicture: '/images/profile.jpg' },
-          comment: 'nice picture2',
-          id: 4,
-        },
-        {
-          profile: { name: 'rivu', profilePicture: '/images/profile.jpg' },
-          comment: 'nice picture3',
-          id: 5,
-        },
-      ],
-    },
-  ],
-};
+const request = require('superagent');
+const data = require('../dummyData');
 
 const handleAllPosts = (req, res) => {
-  res.json(data);
+  res.json(data[58026024]);
 };
 
-module.exports = { handleAllPosts };
+const reqLogin = function (req, res) {
+  const { ClientId } = req.app.locals;
+  const redirectUri = 'http://192.168.0.152:3000/user/auth';
+  const route = 'https://github.com/login/oauth/authorize';
+  const url = `${route}?client_id=${ClientId}&redirect_uri=${redirectUri}`;
+  res.redirect(url);
+};
+
+const getToken = function (code, ClientSecret, ClientId) {
+  return request
+    .post('https://github.com/login/oauth/access_token')
+    .send({
+      code,
+      client_secret: ClientSecret,
+      client_id: ClientId,
+    })
+    .set('Accept', 'application/json')
+    .then((res) => res.body)
+    .then((data) => data.access_token);
+};
+
+const getUserInfo = function (token) {
+  return request
+    .get('https://api.github.com/user')
+    .set('User-Agent', 'sticky')
+    .set('Authorization', `token ${token}`)
+    .then((res) => res.body);
+};
+
+const fetchUserDetails = async function (req, res, next) {
+  const { ClientId, ClientSecret } = req.app.locals;
+  const code = req.query.code;
+  try {
+    const token = await getToken(code, ClientSecret, ClientId);
+    const userInfo = await getUserInfo(token);
+    req.userInfo = userInfo;
+    return next();
+  } catch (error) {
+    return res.status('400').send('bad request');
+  }
+};
+
+const handleLogin = async function (req, res) {
+  const { userInfo } = req;
+  req.session = {
+    id: userInfo.id,
+    avatar: userInfo['avatar_url'],
+    time: new Date().toJSON(),
+  };
+  return res.redirect('/');
+};
+
+const handleIsLoggedIn = (req, res) => {
+  const { id, avatar, time } = req.session;
+  console.log(id, avatar, time);
+  if (id) {
+    return res.json({ isLoggedIn: true });
+  }
+  return res.json({ isLoggedIn: false });
+};
+
+module.exports = {
+  handleAllPosts,
+  reqLogin,
+  handleLogin,
+  fetchUserDetails,
+  handleIsLoggedIn,
+};
