@@ -2,7 +2,8 @@ const request = require('superagent');
 const data = require('../dummyData');
 
 const handleAllPosts = (req, res) => {
-  res.json(data[58026024]);
+  const { id } = req.session;
+  res.json(data[id]);
 };
 
 const reqLogin = function (req, res) {
@@ -58,8 +59,7 @@ const handleLogin = async function (req, res) {
 };
 
 const handleIsLoggedIn = (req, res) => {
-  const { id, avatar, time } = req.session;
-  console.log(id, avatar, time);
+  const { id } = req.session;
   if (id) {
     return res.json({ isLoggedIn: true });
   }

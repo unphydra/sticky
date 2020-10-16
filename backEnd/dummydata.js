@@ -9,7 +9,8 @@ module.exports = {
       {
         profile: {
           name: 'rivu',
-          profilePicture: '/images/profile.jpg',
+          profilePicture:
+            'https://avatars3.githubusercontent.com/u/58026024?v=4',
         },
         heading: 'Durlovpur',
         image: '/images/nature.jpg',
@@ -19,7 +20,8 @@ module.exports = {
           {
             profile: {
               name: 'rivu',
-              profilePicture: '/images/profile.jpg',
+              profilePicture:
+                'https://avatars3.githubusercontent.com/u/58026024?v=4',
             },
             comment: 'nice picture',
             id: 1,
@@ -27,7 +29,8 @@ module.exports = {
           {
             profile: {
               name: 'rivu',
-              profilePicture: '/images/profile.jpg',
+              profilePicture:
+                'https://avatars3.githubusercontent.com/u/58026024?v=4',
             },
             comment: 'nice picture2',
             id: 2,
@@ -37,7 +40,8 @@ module.exports = {
       {
         profile: {
           name: 'Layek',
-          profilePicture: '/images/profile.jpg',
+          profilePicture:
+            'https://avatars3.githubusercontent.com/u/58026024?v=4',
         },
         heading: 'Bankura',
         image: '/images/nature2.jpeg',
@@ -47,7 +51,8 @@ module.exports = {
           {
             profile: {
               name: 'rivu',
-              profilePicture: '/images/profile.jpg',
+              profilePicture:
+                'https://avatars3.githubusercontent.com/u/58026024?v=4',
             },
             comment: 'nice picture',
             id: 3,
@@ -55,7 +60,8 @@ module.exports = {
           {
             profile: {
               name: 'rivu',
-              profilePicture: '/images/profile.jpg',
+              profilePicture:
+                'https://avatars3.githubusercontent.com/u/58026024?v=4',
             },
             comment: 'nice picture2',
             id: 4,
@@ -63,7 +69,8 @@ module.exports = {
           {
             profile: {
               name: 'rivu',
-              profilePicture: '/images/profile.jpg',
+              profilePicture:
+                'https://avatars3.githubusercontent.com/u/58026024?v=4',
             },
             comment: 'nice picture3',
             id: 5,

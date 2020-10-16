@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { StickyContext } from './StickyComp';
 
 const AppName = () => <div style={{ fontSize: '20px' }}>Sticky</div>;
@@ -37,18 +38,26 @@ const Message = () => (
   </svg>
 );
 
-const AddPost = () => (
-  <svg
-    height="22"
-    width="22"
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-    aria-label=""
-    role="img"
-  >
-    <path d="M22 10h-8V2a2 2 0 0 0-4 0v8H2a2 2 0 0 0 0 4h8v8a2 2 0 0 0 4 0v-8h8a2 2 0 0 0 0-4"></path>
-  </svg>
-);
+const AddPost = () => {
+  const history = useHistory();
+
+  const redirect = () => {
+    history.push('/newPost');
+  };
+  return (
+    <svg
+      height="22"
+      width="22"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      aria-label=""
+      role="img"
+      onClick={redirect}
+    >
+      <path d="M22 10h-8V2a2 2 0 0 0-4 0v8H2a2 2 0 0 0 0 4h8v8a2 2 0 0 0 4 0v-8h8a2 2 0 0 0 0-4"></path>
+    </svg>
+  );
+};
 
 const Profile = () => {
   const { state } = useContext(StickyContext);
