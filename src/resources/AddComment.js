@@ -16,13 +16,14 @@ const StyledTextInput = styled.input`
   outline: none;
   border: none;
   padding-left: 10px;
+  font-size: 16px;
 `;
 const StyledSubmitInput = styled.input`
+  font-size: 18px;
   width: 50px;
   outline: none;
   border: none;
   background: none;
-  fontsize: 20px;
   font-weight: 600;
 `;
 

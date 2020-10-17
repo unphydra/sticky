@@ -140,7 +140,7 @@ const Post = ({ value }) => (
   <div
     style={{
       border: border,
-      marginBottom: '25px',
+      marginBottom: '50px',
       borderRadius: '3px',
       backgroundColor: 'white',
     }}
