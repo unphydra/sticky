@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import StickyApi from './StickyApi';
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,7 +10,13 @@ import LoginPage from './LoginPage.js';
 import Sticky from './Sticky.js';
 import { StickyComp } from './StickyComp.js';
 
-const StickyRouter = ({ loggedIn }) => {
+const StickyRouter = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    StickyApi.isLoggedIn().then(setLoggedIn);
+  }, []);
+
   return (
     <Router>
       <Switch>

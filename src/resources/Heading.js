@@ -4,7 +4,15 @@ import { StickyContext } from './StickyComp';
 const border = '1px solid rgb(200,200,200)';
 
 const AppName = () => (
-  <div style={{ fontSize: '26px', fontWeight: '600' }}>𝓢𝓽𝓲𝓬𝓴𝔂</div>
+  <div
+    style={{
+      fontSize: '26px',
+      fontWeight: '600',
+      color: 'rgb(80,80,80)',
+    }}
+  >
+    𝓢𝓽𝓲𝓬𝓴𝔂
+  </div>
 );
 const Search = () => (
   <input

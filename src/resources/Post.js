@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AddComment from './AddComment';
 import Comments from './Comments';
+import StickyApi from './StickyApi';
 
 const border = '1px solid rgb(200,200,200)';
 
@@ -55,9 +56,46 @@ const Option = () => (
   </svg>
 );
 
-const PostBody = ({ value }) => (
-  <img style={{ width: '598px' }} src={value} alt=""></img>
-);
+const PostBody = ({ value }) => {
+  const [state, setState] = useState({ display: 'block', image: null });
+  const [size, setSize] = useState({ width: null, height: null });
+  const maxWidth = 598;
+  const maxHeight = 800;
+
+  useEffect(() => {
+    StickyApi.fetchImage(value)
+      .then((data) => URL.createObjectURL(data))
+      .then((imageUrl) => {
+        setState(({ display }) => ({ image: imageUrl, display }));
+      });
+  }, [value]);
+
+  const handleSetSize = (e) => {
+    const hScale = maxHeight / e.target.height;
+    const wScale = maxWidth / e.target.width;
+    state.display = 'block';
+    setState(state);
+    if (hScale < wScale) {
+      return setSize({ height: maxHeight });
+    }
+    return setSize({ width: maxWidth });
+  };
+
+  return (
+    <div style={{ width: maxWidth, backgroundColor: 'rgb(250,250,250' }}>
+      <img
+        style={{
+          ...size,
+          display: state.display,
+          margin: 'auto',
+        }}
+        src={state.image}
+        alt=""
+        onLoad={handleSetSize}
+      ></img>
+    </div>
+  );
+};
 
 const LikeButton = () => (
   <svg
@@ -113,24 +151,22 @@ const IconBar = () => (
   </div>
 );
 
-const Header = ({ value: { profile, heading } }) => {
-  return (
-    <header
-      style={{
-        display: 'flex',
-        padding: '10px',
-        justifyContent: 'space-between',
-        borderBottom: border,
-      }}
-    >
-      <div style={{ display: 'flex' }}>
-        <Profile imageUrl={profile.profilePicture}></Profile>
-        <Name value={{ name: profile.name, heading }}></Name>
-      </div>
-      <Option></Option>
-    </header>
-  );
-};
+const Header = ({ value: { profile, heading } }) => (
+  <header
+    style={{
+      display: 'flex',
+      padding: '10px',
+      justifyContent: 'space-between',
+      borderBottom: border,
+    }}
+  >
+    <div style={{ display: 'flex' }}>
+      <Profile imageUrl={profile.profilePicture}></Profile>
+      <Name value={{ name: profile.name, heading }}></Name>
+    </div>
+    <Option></Option>
+  </header>
+);
 
 const Likes = ({ value }) => (
   <div style={{ margin: '5px 0px', fontWeight: '600' }}>{value} Likes</div>

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { StickyContext } from './StickyComp';
 import styled from 'styled-components';
+import StickyApi from './StickyApi';
 
 const NewPostContext = createContext(null);
 
@@ -16,17 +17,11 @@ const InputFile = () => {
   );
 };
 
-const InputSubmit = () => {
+const InputSubmit = ({ className }) => {
   const { handleSubmitFile } = useContext(NewPostContext);
   return (
     <input
-      style={{
-        border: '1px solid black',
-        fontSize: '20px',
-        padding: '5px',
-        background: 'none',
-        cursor: 'pointer',
-      }}
+      className={className}
       type="submit"
       onClick={handleSubmitFile}
       value="Submit"
@@ -36,31 +31,22 @@ const InputSubmit = () => {
 
 const StyledInputSubmit = styled(InputSubmit)`
   border: 1px solid black;
-  fontsize: 20px;
+  font-size: 20px;
   padding: 5px;
   background: none;
   cursor: pointer;
+  width: 100px;
 `;
 
 const Label = ({ className, htmlFor, children }) => (
-  <label
-    htmlFor={htmlFor}
-    className={className}
-    style={{
-      border: '1px solid black',
-      fontSize: '20px',
-      padding: '5px',
-      marginRight: '10px',
-      cursor: 'pointer',
-    }}
-  >
+  <label htmlFor={htmlFor} className={className}>
     {children}
   </label>
 );
 
 const StyledLabel = styled(Label)`
   border: 1px solid black;
-  fontsize: 20px;
+  font-size: 20px;
   padding: 5px;
   margin-right: 10px;
   cursor: pointer;
@@ -100,14 +86,18 @@ const StyledTitleInput = styled(TitleInput)`
   border-bottom: 1px solid black;
 `;
 
+const Buttons = () => (
+  <div style={{ alignSelf: 'center' }}>
+    <Upload></Upload>
+    <StyledInputSubmit></StyledInputSubmit>
+  </div>
+);
+
 const SideBox = ({ className }) => {
   return (
     <div className={className}>
       <StyledTitleInput></StyledTitleInput>
-      <div>
-        <Upload></Upload>
-        <StyledInputSubmit></StyledInputSubmit>
-      </div>
+      <Buttons></Buttons>
     </div>
   );
 };
@@ -123,6 +113,7 @@ const BlankImage = styled.div`
   margin: 50px;
   background-color: gray;
   height: 400px;
+  border-radius: 3px;
 `;
 
 const StyledImage = styled.img`
@@ -150,11 +141,11 @@ const BackgroundDiv = styled.div`
 
 const NewPostBox = styled.div`
   width: 800px;
-  border: 1px solid black;
   margin: auto;
   margin-top: 100px;
   background-color: white;
   display: flex;
+  border-radius: 3px;
 `;
 
 const NewPost = () => {
@@ -184,11 +175,7 @@ const NewPost = () => {
       const formData = new FormData();
       formData.append('image', image);
       formData.append('title', title);
-
-      fetch('/api/imageUpload', {
-        method: 'POST',
-        body: formData,
-      }).then(() => dispatch({ comp: 'main' }));
+      StickyApi.postForm(formData).then(() => dispatch({ comp: 'main' }));
     }
   };
 

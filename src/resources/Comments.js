@@ -12,9 +12,9 @@ const Comment = ({ value }) => (
 );
 
 const Comments = ({ value }) => {
-  const commentsComp = value.map((c) => (
-    <Comment key={c.id} value={c}></Comment>
-  ));
+  const commentsComp = value
+    .slice(-3)
+    .map((c) => <Comment key={c.id} value={c}></Comment>);
 
   return <div>{commentsComp}</div>;
 };

@@ -1,14 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import StickyApi from './resources/StickyApi';
+import React from 'react';
 import StickyRouter from './resources/StickyRouter';
 
-const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    StickyApi.isLoggedIn().then(setLoggedIn);
-  }, []);
-  return <StickyRouter loggedIn={loggedIn}></StickyRouter>;
-};
+const App = () => <StickyRouter></StickyRouter>;
 
 export default App;
