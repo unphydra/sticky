@@ -188,7 +188,7 @@ const Post = ({ value }) => (
       <Likes value={value.likes}></Likes>
       <Comments value={value.comments}></Comments>
     </footer>
-    <AddComment></AddComment>
+    <AddComment id={value.id}></AddComment>
   </div>
 );
 

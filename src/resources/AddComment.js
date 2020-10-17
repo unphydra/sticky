@@ -18,7 +18,7 @@ const StyledTextInput = styled.input`
   padding-left: 10px;
   font-size: 16px;
 `;
-const StyledSubmitInput = styled.input`
+const StyledInput = styled.input`
   font-size: 18px;
   width: 50px;
   outline: none;
@@ -27,12 +27,14 @@ const StyledSubmitInput = styled.input`
   font-weight: 600;
 `;
 
-const AddComment = () => {
-  const handleSubmit = (e) => {};
+const AddComment = ({ id }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <AddCommentForm onSubmit={handleSubmit}>
       <StyledTextInput placeholder="Add a comment"></StyledTextInput>
-      <StyledSubmitInput type="submit" value="Post"></StyledSubmitInput>
+      <StyledInput type="submit" value="Post"></StyledInput>
     </AddCommentForm>
   );
 };
