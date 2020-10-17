@@ -7,6 +7,7 @@ const {
   handleLogin,
   reqLogin,
   handleIsLoggedIn,
+  handleNewPost,
 } = require('./handlers.js');
 
 const app = express();
@@ -25,7 +26,8 @@ app.use(express.static(__dirname + '/../../build'));
 app.use(express.static(__dirname + '/../public'));
 app.get('/api/getPosts', handleAllPosts);
 app.get('/login', reqLogin);
-app.get('/api/isLoggedIn', handleIsLoggedIn);
 app.get('/user/auth', fetchUserDetails, handleLogin);
+app.get('/api/isLoggedIn', handleIsLoggedIn);
+app.post('/api/imageUpload', handleNewPost);
 
 module.exports = app;

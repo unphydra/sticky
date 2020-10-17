@@ -1,9 +1,18 @@
 const request = require('superagent');
-const data = require('../dummyData');
+const multer = require('multer');
+const fs = require('fs');
+const data = require('../database/data.json') || {};
+
+const writeToDb = () =>
+  fs.writeFileSync(
+    './backend/database/data.json',
+    JSON.stringify(data),
+    'utf8'
+  );
 
 const handleAllPosts = (req, res) => {
   const { id } = req.session;
-  res.json(data[id]);
+  res.json({ user: data.users[id], posts: data.posts });
 };
 
 const reqLogin = function (req, res) {
@@ -50,11 +59,19 @@ const fetchUserDetails = async function (req, res, next) {
 
 const handleLogin = async function (req, res) {
   const { userInfo } = req;
+  const id = userInfo.id;
   req.session = {
-    id: userInfo.id,
-    avatar: userInfo['avatar_url'],
+    id,
     time: new Date().toJSON(),
   };
+
+  if (!data.users[id]) {
+    data.users[id] = {
+      name: userInfo.name,
+      profilePicture: userInfo['avatar_url'],
+    };
+  }
+
   return res.redirect('/');
 };
 
@@ -66,10 +83,33 @@ const handleIsLoggedIn = (req, res) => {
   return res.json({ isLoggedIn: false });
 };
 
+const handleNewPost = (req, res) => {
+  const { id } = req.session;
+  const storage = multer.diskStorage({
+    destination: './backEnd/public/images',
+    filename: (req, file, cb) => cb(null, `${data.postId}.jpg`),
+  });
+  const upload = multer({ storage: storage }).single('image');
+  upload(req, res, (err) => {
+    data.posts.push({
+      profile: data.users[id],
+      heading: req.body.title,
+      id: data.postId,
+      image: `/images/${data.postId}.jpg`,
+      likes: 0,
+      comments: [],
+    });
+    data.postId++;
+    writeToDb();
+    res.sendStatus(200);
+  });
+};
+
 module.exports = {
   handleAllPosts,
   reqLogin,
   handleLogin,
   fetchUserDetails,
   handleIsLoggedIn,
+  handleNewPost,
 };
