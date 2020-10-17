@@ -2,12 +2,13 @@ import React from 'react';
 import AddComment from './AddComment';
 import Comments from './Comments';
 
+const border = '1px solid rgb(200,200,200)';
+
 const Profile = ({ imageUrl }) => (
   <img
     style={{
       height: '28px',
       width: '28px',
-      border: '1px solid black',
       borderRadius: '50%',
     }}
     src={imageUrl}
@@ -16,8 +17,8 @@ const Profile = ({ imageUrl }) => (
 );
 
 const Name = ({ value: { name, heading } }) => (
-  <div style={{ marginLeft: '10px' }}>
-    <div>{name}</div>
+  <div style={{ marginLeft: '15px' }}>
+    <div style={{ fontWeight: '600' }}>{name}</div>
     <div style={{ fontSize: '12px' }}>{heading}</div>
   </div>
 );
@@ -119,7 +120,7 @@ const Header = ({ value: { profile, heading } }) => {
         display: 'flex',
         padding: '10px',
         justifyContent: 'space-between',
-        borderBottom: '1px solid',
+        borderBottom: border,
       }}
     >
       <div style={{ display: 'flex' }}>
@@ -136,7 +137,14 @@ const Likes = ({ value }) => (
 );
 
 const Post = ({ value }) => (
-  <div style={{ border: '1px solid', marginBottom: '25px' }}>
+  <div
+    style={{
+      border: border,
+      marginBottom: '25px',
+      borderRadius: '3px',
+      backgroundColor: 'white',
+    }}
+  >
     <Header value={value}></Header>
     <PostBody value={value.image}></PostBody>
     <footer style={{ padding: '10px' }}>

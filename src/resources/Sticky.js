@@ -10,7 +10,7 @@ const Sticky = (props) => {
     visible: { comp },
   } = useContext(StickyContext);
 
-  const post = comp === 'post';
+  const isPost = comp === 'post';
 
   return state === null ? (
     <div>Loading...</div>
@@ -20,7 +20,7 @@ const Sticky = (props) => {
         <Heading></Heading>
         <Container></Container>
       </div>
-      {post && <NewPost></NewPost>}
+      {isPost && <NewPost></NewPost>}
     </React.Fragment>
   );
 };

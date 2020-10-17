@@ -15,7 +15,12 @@ const StickyRouter = ({ loggedIn }) => {
       <Switch>
         <Route path="/" exact>
           {loggedIn ? (
-            <div style={{ fontFamily: 'sans-serif' }}>
+            <div
+              style={{
+                fontFamily: 'sans-serif',
+                backgroundColor: 'rgb(250,250,250)',
+              }}
+            >
               <StickyComp>
                 <Sticky></Sticky>
               </StickyComp>

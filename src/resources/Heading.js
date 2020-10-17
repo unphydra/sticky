@@ -1,8 +1,23 @@
 import React, { useContext } from 'react';
 import { StickyContext } from './StickyComp';
 
-const AppName = () => <div style={{ fontSize: '20px' }}>Sticky</div>;
-const Search = () => <input placeholder="🔍search"></input>;
+const border = '1px solid rgb(200,200,200)';
+
+const AppName = () => (
+  <div style={{ fontSize: '26px', fontWeight: '600' }}>𝓢𝓽𝓲𝓬𝓴𝔂</div>
+);
+const Search = () => (
+  <input
+    style={{
+      border: border,
+      padding: '5px',
+      textAlign: 'center',
+      width: '200px',
+      borderRadius: '3px',
+    }}
+    placeholder="🔍search"
+  ></input>
+);
 
 // <svg
 //   aria-label="Home"
@@ -62,9 +77,8 @@ const Profile = () => {
   return (
     <img
       style={{
-        height: '22px',
-        width: '22px',
-        border: '1px solid black',
+        height: '24px',
+        width: '24px',
         borderRadius: '50%',
       }}
       src={state.user.profilePicture}
@@ -78,7 +92,7 @@ const NavBar = () => (
     style={{
       display: 'flex',
       flexDirection: 'row',
-      width: '108px',
+      width: '168px',
       justifyContent: 'space-around',
     }}
   >
@@ -95,9 +109,13 @@ const Heading = () => (
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-around',
-      padding: '5px',
-      borderBottom: '1px solid',
+      alignItems: 'center',
+      borderBottom: border,
       marginBottom: '15px',
+      padding: '8px',
+      backgroundColor: 'white',
+      position: 'fixed',
+      width: '100vw',
     }}
   >
     <AppName></AppName>
