@@ -106,7 +106,7 @@ const handleNewPost = (req, res) => {
 };
 
 const verifyUser = (req, res, next) => {
-  if (req.id) {
+  if (req.session.id !== null) {
     return next();
   }
   return res.status('400').send('bad request');

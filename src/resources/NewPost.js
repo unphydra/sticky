@@ -1,35 +1,81 @@
 import React, { createContext, useContext, useState } from 'react';
 import { StickyContext } from './StickyComp';
+import styled from 'styled-components';
 
 const NewPostContext = createContext(null);
 
-const Upload = () => {
+const InputFile = () => {
   const { handleImagePreview } = useContext(NewPostContext);
   return (
+    <input
+      type="file"
+      onChange={handleImagePreview}
+      style={{ display: 'none' }}
+      id="imageInput"
+    />
+  );
+};
+
+const InputSubmit = () => {
+  const { handleSubmitFile } = useContext(NewPostContext);
+  return (
+    <input
+      style={{
+        border: '1px solid black',
+        fontSize: '20px',
+        padding: '5px',
+        background: 'none',
+        cursor: 'pointer',
+      }}
+      type="submit"
+      onClick={handleSubmitFile}
+      value="Submit"
+    />
+  );
+};
+
+const StyledInputSubmit = styled(InputSubmit)`
+  border: 1px solid black;
+  fontsize: 20px;
+  padding: 5px;
+  background: none;
+  cursor: pointer;
+`;
+
+const Label = ({ className, htmlFor, children }) => (
+  <label
+    htmlFor={htmlFor}
+    className={className}
+    style={{
+      border: '1px solid black',
+      fontSize: '20px',
+      padding: '5px',
+      marginRight: '10px',
+      cursor: 'pointer',
+    }}
+  >
+    {children}
+  </label>
+);
+
+const StyledLabel = styled(Label)`
+  border: 1px solid black;
+  fontsize: 20px;
+  padding: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
+const Upload = () => {
+  return (
     <React.Fragment>
-      <input
-        type="file"
-        onChange={handleImagePreview}
-        style={{ display: 'none' }}
-        id="imageInput"
-      />
-      <label
-        htmlFor="imageInput"
-        style={{
-          border: '1px solid black',
-          fontSize: '20px',
-          padding: '5px',
-          marginRight: '10px',
-          cursor: 'pointer',
-        }}
-      >
-        Upload file
-      </label>
+      <InputFile></InputFile>
+      <StyledLabel htmlFor="imageInput">Upload file</StyledLabel>
     </React.Fragment>
   );
 };
 
-const TitleInput = () => {
+const TitleInput = ({ className }) => {
   const { handleTitle } = useContext(NewPostContext);
 
   const handleKeyPress = (e) => {
@@ -38,12 +84,7 @@ const TitleInput = () => {
 
   return (
     <input
-      style={{
-        fontSize: '30px',
-        outline: 'none',
-        border: 'none',
-        borderBottom: '1px solid black',
-      }}
+      className={className}
       placeholder="Add your title"
       type="text"
       onKeyDown={handleKeyPress}
@@ -52,57 +93,76 @@ const TitleInput = () => {
   );
 };
 
-const SideBox = () => {
-  const { handleSubmitFile } = useContext(NewPostContext);
+const StyledTitleInput = styled(TitleInput)`
+  font-size: 30px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+`;
+
+const SideBox = ({ className }) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-      }}
-    >
-      <TitleInput></TitleInput>
+    <div className={className}>
+      <StyledTitleInput></StyledTitleInput>
       <div>
         <Upload></Upload>
-        <input
-          style={{
-            border: '1px solid black',
-            fontSize: '20px',
-            padding: '5px',
-            background: 'none',
-            cursor: 'pointer',
-          }}
-          type="submit"
-          onClick={handleSubmitFile}
-          value="Submit"
-        />
+        <StyledInputSubmit></StyledInputSubmit>
       </div>
     </div>
   );
 };
 
+const ColumnFlexSideBox = styled(SideBox)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+`;
+
+const BlankImage = styled.div`
+  width: 300px;
+  margin: 50px;
+  background-color: gray;
+  height: 400px;
+`;
+
+const StyledImage = styled.img`
+  width: 300px;
+  margin: 50px;
+`;
+
 const ImagePreview = ({ value }) => (
-  <div style={{ width: '400px' }}>
+  <div>
     {value ? (
-      <img style={{ width: '300px', margin: '50px' }} src={value} alt="" />
+      <StyledImage src={value} alt=""></StyledImage>
     ) : (
-      <div
-        style={{
-          width: '300px',
-          backgroundColor: 'gray',
-          height: '400px',
-          margin: '50px',
-        }}
-      ></div>
+      <BlankImage></BlankImage>
     )}
   </div>
 );
 
+const BackgroundDiv = styled.div`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  background-color: rgba(239, 239, 239, 0.7);
+`;
+
+const NewPostBox = styled.div`
+  width: 800px;
+  border: 1px solid black;
+  margin: auto;
+  margin-top: 100px;
+  background-color: white;
+  display: flex;
+`;
+
 const NewPost = () => {
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [title, setTitle] = useState(null);
+  const [state, setState] = useState({
+    image: null,
+    imagePreview: null,
+    title: null,
+  });
 
   const { dispatch } = useContext(StickyContext);
 
@@ -110,12 +170,16 @@ const NewPost = () => {
     let imageFile = e.target.files[0];
     if (imageFile) {
       let imageUrl = URL.createObjectURL(imageFile);
-      setImagePreview(imageUrl);
-      setImage(imageFile);
+      setState({
+        image: imageFile,
+        imagePreview: imageUrl,
+        title: state.title,
+      });
     }
   };
 
   const handleSubmitFile = () => {
+    const { image, title } = state;
     if (image !== null && title !== null) {
       const formData = new FormData();
       formData.append('image', image);
@@ -129,42 +193,24 @@ const NewPost = () => {
   };
 
   const handleTitle = (title) => {
-    setTitle(title);
+    state.title = title;
+    setState(state);
   };
 
   return (
     <NewPostContext.Provider
       value={{ handleImagePreview, handleSubmitFile, handleTitle }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          width: '100vw',
-          height: '100vh',
-          top: '0',
-          backgroundColor: 'rgba(239,239,239,0.7)',
-          zIndex: '1',
-        }}
+      <BackgroundDiv
         onClick={(e) => {
           dispatch({ comp: 'main' });
         }}
       >
-        <div
-          style={{
-            width: '800px',
-            border: '1px solid black',
-            margin: 'auto',
-            marginTop: '100px',
-            backgroundColor: 'white',
-            display: 'flex',
-            zIndex: '2',
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <ImagePreview value={imagePreview}></ImagePreview>
-          <SideBox></SideBox>
-        </div>
-      </div>
+        <NewPostBox onClick={(e) => e.stopPropagation()}>
+          <ImagePreview value={state.imagePreview}></ImagePreview>
+          <ColumnFlexSideBox></ColumnFlexSideBox>
+        </NewPostBox>
+      </BackgroundDiv>
     </NewPostContext.Provider>
   );
 };

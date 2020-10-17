@@ -15,13 +15,13 @@ const Sticky = (props) => {
   return state === null ? (
     <div>Loading...</div>
   ) : (
-    <div>
+    <React.Fragment>
       <div>
         <Heading></Heading>
         <Container></Container>
       </div>
       {post && <NewPost></NewPost>}
-    </div>
+    </React.Fragment>
   );
 };
 
