@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import { StickyContext } from './StickyComp';
 
 const AppName = () => <div style={{ fontSize: '20px' }}>Sticky</div>;
@@ -39,10 +38,9 @@ const Message = () => (
 );
 
 const AddPost = () => {
-  const history = useHistory();
-
-  const redirect = () => {
-    history.push('/newPost');
+  const { dispatch } = useContext(StickyContext);
+  const handleClick = () => {
+    dispatch({ comp: 'post' });
   };
   return (
     <svg
@@ -52,7 +50,7 @@ const AddPost = () => {
       aria-hidden="true"
       aria-label=""
       role="img"
-      onClick={redirect}
+      onClick={handleClick}
     >
       <path d="M22 10h-8V2a2 2 0 0 0-4 0v8H2a2 2 0 0 0 0 4h8v8a2 2 0 0 0 4 0v-8h8a2 2 0 0 0 0-4"></path>
     </svg>
@@ -69,7 +67,7 @@ const Profile = () => {
         border: '1px solid black',
         borderRadius: '50%',
       }}
-      src={state.profile.profilePicture}
+      src={state.user.profilePicture}
       alt=""
     ></img>
   );
@@ -91,7 +89,7 @@ const NavBar = () => (
   </div>
 );
 
-const Heading = (props) => (
+const Heading = () => (
   <div
     style={{
       display: 'flex',

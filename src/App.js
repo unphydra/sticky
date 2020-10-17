@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import StickyApi from './resources/StickyApi';
-import StickyRouter from './StickyRouter';
+import StickyRouter from './resources/StickyRouter';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);

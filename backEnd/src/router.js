@@ -8,6 +8,7 @@ const {
   reqLogin,
   handleIsLoggedIn,
   handleNewPost,
+  verifyUser,
 } = require('./handlers.js');
 
 const app = express();
@@ -24,10 +25,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../../build'));
 app.use(express.static(__dirname + '/../public'));
-app.get('/api/getPosts', handleAllPosts);
 app.get('/login', reqLogin);
-app.get('/user/auth', fetchUserDetails, handleLogin);
 app.get('/api/isLoggedIn', handleIsLoggedIn);
+app.get('/user/auth', fetchUserDetails, handleLogin);
+
+app.use(verifyUser);
+app.get('/api/getPosts', handleAllPosts);
 app.post('/api/imageUpload', handleNewPost);
 
 module.exports = app;

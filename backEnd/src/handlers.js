@@ -105,6 +105,13 @@ const handleNewPost = (req, res) => {
   });
 };
 
+const verifyUser = (req, res, next) => {
+  if (req.id) {
+    return next();
+  }
+  return res.status('400').send('bad request');
+};
+
 module.exports = {
   handleAllPosts,
   reqLogin,
@@ -112,4 +119,5 @@ module.exports = {
   fetchUserDetails,
   handleIsLoggedIn,
   handleNewPost,
+  verifyUser,
 };
