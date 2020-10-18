@@ -6,6 +6,7 @@ const {
   handlePost,
   handleComment,
   handlePostComment,
+  handleLiked,
   fetchUserDetails,
   handleLogin,
   reqLogin,
@@ -38,5 +39,6 @@ app.get('/api/getPost/:id', handlePost);
 app.get('/api/getComment/:id', handleComment);
 app.post('/api/postComment', handlePostComment);
 app.post('/api/imageUpload', handleNewPost);
+app.post('/api/like', handleLiked);
 
 module.exports = app;

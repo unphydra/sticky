@@ -13,17 +13,24 @@ const StickyApi = {
       body: form,
     }),
   fetchImage: (url) => fetch(url).then((res) => res.blob()),
-  postComment: (id, text) => {
-    console.log(id, text);
-    return fetch(`/api/postComment`, {
+  postComment: (id, text) =>
+    fetch(`/api/postComment`, {
       credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
       },
       method: 'POST',
       body: JSON.stringify({ id, text }),
-    });
-  },
+    }),
+  postLike: (id) =>
+    fetch('/api/like', {
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({ id }),
+    }),
 };
 
 export default StickyApi;

@@ -20,8 +20,11 @@ const handleAllPosts = (req, res) => {
 
 const handlePost = (req, res) => {
   const { id } = req.params;
-  const post = data.posts[id];
+  const post = Object.assign({}, data.posts[id]);
   post.profile = data.users[post.userId];
+  const likedUser = data.likes[id] || [];
+  post.likedUser = likedUser.includes(req.session.id);
+  post.likes = likedUser.length;
   res.json(post);
 };
 
@@ -42,6 +45,27 @@ const handlePostComment = (req, res) => {
   data.commentId++;
   writeToDb();
   res.sendStatus(200);
+};
+
+const handleLiked = (req, res) => {
+  const postId = req.body.id;
+  const userId = req.session.id;
+  let postLike = data.likes[postId];
+  if (postLike === undefined) {
+    data.likes[postId] = [];
+    postLike = data.likes[postId];
+  }
+
+  if (postLike.includes(userId)) {
+    const inx = postLike.indexOf(userId);
+    postLike.splice(inx, 1);
+    writeToDb();
+    return res.sendStatus(200);
+  }
+
+  postLike.push(userId);
+  writeToDb();
+  return res.sendStatus(200);
 };
 
 const reqLogin = function (req, res) {
@@ -125,8 +149,8 @@ const handleNewPost = (req, res) => {
       heading: req.body.title,
       id: data.postId,
       image: `/images/${data.postId}.jpg`,
-      likes: 0,
       comments: [],
+      likedUser: [],
     };
     data.postId++;
     writeToDb();
@@ -146,6 +170,7 @@ module.exports = {
   handlePost,
   handleComment,
   handlePostComment,
+  handleLiked,
   reqLogin,
   handleLogin,
   fetchUserDetails,
