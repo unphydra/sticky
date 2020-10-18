@@ -12,7 +12,36 @@ const writeToDb = () =>
 
 const handleAllPosts = (req, res) => {
   const { id } = req.session;
-  res.json({ user: data.users[id], posts: data.posts });
+  res.json({
+    user: data.users[id],
+    posts: Object.keys(data.posts).reverse(),
+  });
+};
+
+const handlePost = (req, res) => {
+  const { id } = req.params;
+  const post = data.posts[id];
+  post.profile = data.users[post.userId];
+  res.json(post);
+};
+
+const handleComment = (req, res) => {
+  const { id } = req.params;
+  const comment = data.comments[id];
+  comment.profile = data.users[comment.userId];
+  res.json(comment);
+};
+
+const handlePostComment = (req, res) => {
+  const { id, text } = req.body;
+  data.comments[data.commentId] = {
+    userId: req.session.id,
+    comment: text,
+  };
+  data.posts[id].comments.push(data.commentId);
+  data.commentId++;
+  writeToDb();
+  res.sendStatus(200);
 };
 
 const reqLogin = function (req, res) {
@@ -91,14 +120,14 @@ const handleNewPost = (req, res) => {
   });
   const upload = multer({ storage: storage }).single('image');
   upload(req, res, (err) => {
-    data.posts.push({
-      profile: data.users[id],
+    data.posts[data.postId] = {
+      userId: id,
       heading: req.body.title,
       id: data.postId,
       image: `/images/${data.postId}.jpg`,
       likes: 0,
       comments: [],
-    });
+    };
     data.postId++;
     writeToDb();
     res.sendStatus(200);
@@ -114,6 +143,9 @@ const verifyUser = (req, res, next) => {
 
 module.exports = {
   handleAllPosts,
+  handlePost,
+  handleComment,
+  handlePostComment,
   reqLogin,
   handleLogin,
   fetchUserDetails,

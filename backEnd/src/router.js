@@ -3,6 +3,9 @@ const cookieSession = require('cookie-session');
 
 const {
   handleAllPosts,
+  handlePost,
+  handleComment,
+  handlePostComment,
   fetchUserDetails,
   handleLogin,
   reqLogin,
@@ -31,6 +34,9 @@ app.get('/user/auth', fetchUserDetails, handleLogin);
 
 app.use(verifyUser);
 app.get('/api/getPosts', handleAllPosts);
+app.get('/api/getPost/:id', handlePost);
+app.get('/api/getComment/:id', handleComment);
+app.post('/api/postComment', handlePostComment);
 app.post('/api/imageUpload', handleNewPost);
 
 module.exports = app;

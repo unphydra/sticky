@@ -172,24 +172,35 @@ const Likes = ({ value }) => (
   <div style={{ margin: '5px 0px', fontWeight: '600' }}>{value} Likes</div>
 );
 
-const Post = ({ value }) => (
-  <div
-    style={{
-      border: border,
-      marginBottom: '50px',
-      borderRadius: '3px',
-      backgroundColor: 'white',
-    }}
-  >
-    <Header value={value}></Header>
-    <PostBody value={value.image}></PostBody>
-    <footer style={{ padding: '10px' }}>
-      <IconBar></IconBar>
-      <Likes value={value.likes}></Likes>
-      <Comments value={value.comments}></Comments>
-    </footer>
-    <AddComment id={value.id}></AddComment>
-  </div>
-);
+const Post = ({ id }) => {
+  const [value, setValue] = useState(null);
+  const [trigger, setTrigger] = useState(false);
+
+  useEffect(() => {
+    StickyApi.getPost(id).then(setValue);
+  }, [id, trigger]);
+
+  return value ? (
+    <div
+      style={{
+        border: border,
+        marginBottom: '50px',
+        borderRadius: '3px',
+        backgroundColor: 'white',
+      }}
+    >
+      <Header value={value}></Header>
+      <PostBody value={value.image}></PostBody>
+      <footer style={{ padding: '10px' }}>
+        <IconBar></IconBar>
+        <Likes value={value.likes}></Likes>
+        <Comments value={value.comments}></Comments>
+      </footer>
+      <AddComment id={value.id} trigger={setTrigger}></AddComment>
+    </div>
+  ) : (
+    <div>Loading..</div>
+  );
+};
 
 export default Post;

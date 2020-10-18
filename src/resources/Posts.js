@@ -4,9 +4,7 @@ import { StickyContext } from './StickyComp';
 
 const Posts = () => {
   const { state } = useContext(StickyContext);
-  const postsComp = state.posts.map((p) => (
-    <Post key={p.id} value={p}></Post>
-  ));
+  const postsComp = state.posts.map((p) => <Post key={p} id={p}></Post>);
 
   return <div>{postsComp}</div>;
 };

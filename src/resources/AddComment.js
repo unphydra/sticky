@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import StickyApi from './StickyApi';
 
 const border = '1px solid rgb(200,200,200)';
 
@@ -27,13 +28,25 @@ const StyledInput = styled.input`
   font-weight: 600;
 `;
 
-const AddComment = ({ id }) => {
+const AddComment = ({ id, trigger }) => {
+  const [text, setText] = useState('');
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (text.length > 0) {
+      setText('');
+      StickyApi.postComment(id, text).then(() => trigger((t) => !t));
+    }
   };
   return (
     <AddCommentForm onSubmit={handleSubmit}>
-      <StyledTextInput placeholder="Add a comment"></StyledTextInput>
+      <StyledTextInput
+        value={text}
+        placeholder="Add a comment"
+        onChange={(e) => {
+          setText(e.target.value);
+        }}
+      ></StyledTextInput>
       <StyledInput type="submit" value="Post"></StyledInput>
     </AddCommentForm>
   );
