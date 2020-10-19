@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Container from './Container';
 import Heading from './Heading';
 import NewPost from './NewPost';
+import PostLikes from './PostLikes';
 import { StickyContext } from './StickyComp';
 
 const Sticky = (props) => {
@@ -11,6 +12,7 @@ const Sticky = (props) => {
   } = useContext(StickyContext);
 
   const isPost = comp === 'post';
+  const isLikes = comp === 'like';
 
   return state === null ? (
     <div>Loading...</div>
@@ -21,6 +23,7 @@ const Sticky = (props) => {
         <Container></Container>
       </div>
       {isPost && <NewPost></NewPost>}
+      {isLikes && <PostLikes></PostLikes>}
     </React.Fragment>
   );
 };

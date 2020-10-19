@@ -15,7 +15,7 @@ const reducer = (state, action) => {
     case 'like':
       return { comp: 'like', data: action.data };
     case 'post':
-      return { comp: 'post', data: action.data };
+      return { comp: 'post' };
     default:
       return state;
   }

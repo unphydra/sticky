@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AddComment from './AddComment';
 import Comments from './Comments';
 import StickyApi from './StickyApi';
+import { StickyContext } from './StickyComp';
 
 const border = '1px solid rgb(200,200,200)';
 
@@ -184,9 +185,19 @@ const Header = ({ value: { profile, heading } }) => (
   </header>
 );
 
-const Likes = ({ value }) => (
-  <div style={{ margin: '5px 0px', fontWeight: '600' }}>{value} Likes</div>
-);
+const Likes = ({ value, id }) => {
+  const { dispatch } = useContext(StickyContext);
+  return (
+    <div
+      style={{ margin: '5px 0px', fontWeight: '600', cursor: 'pointer' }}
+      onClick={() => {
+        dispatch({ comp: 'like', data: { id } });
+      }}
+    >
+      {value} Likes
+    </div>
+  );
+};
 
 const Post = ({ id }) => {
   const [value, setValue] = useState(null);
@@ -213,7 +224,7 @@ const Post = ({ id }) => {
           liked={value.likedUser}
           id={id}
         ></IconBar>
-        <Likes value={value.likes}></Likes>
+        <Likes value={value.likes} id={id}></Likes>
         <Comments value={value.comments}></Comments>
       </footer>
       <AddComment id={value.id} trigger={setTrigger}></AddComment>

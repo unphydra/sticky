@@ -31,6 +31,7 @@ const StickyApi = {
       method: 'POST',
       body: JSON.stringify({ id }),
     }),
+  fetchLikes: (id) => fetch(`/api/likes/${id}`).then((res) => res.json()),
 };
 
 export default StickyApi;

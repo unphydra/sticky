@@ -30,7 +30,7 @@ const handlePost = (req, res) => {
 
 const handleComment = (req, res) => {
   const { id } = req.params;
-  const comment = data.comments[id];
+  const comment = Object.assign({}, data.comments[id]);
   comment.profile = data.users[comment.userId];
   res.json(comment);
 };
@@ -66,6 +66,18 @@ const handleLiked = (req, res) => {
   postLike.push(userId);
   writeToDb();
   return res.sendStatus(200);
+};
+
+const handlePostLikes = (req, res) => {
+  const { id } = req.params;
+  const list = data.likes[id];
+
+  if (!list) {
+    return res.json([]);
+  }
+
+  const result = list.map((id) => data.users[id]);
+  res.json(result);
 };
 
 const reqLogin = function (req, res) {
@@ -171,6 +183,7 @@ module.exports = {
   handleComment,
   handlePostComment,
   handleLiked,
+  handlePostLikes,
   reqLogin,
   handleLogin,
   fetchUserDetails,

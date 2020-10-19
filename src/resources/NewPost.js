@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { StickyContext } from './StickyComp';
 import styled from 'styled-components';
 import StickyApi from './StickyApi';
+import Filter from './BackGroundDiv';
 
 const NewPostContext = createContext(null);
 
@@ -131,14 +132,6 @@ const ImagePreview = ({ value }) => (
   </div>
 );
 
-const BackgroundDiv = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  background-color: rgba(0, 0, 0, 0.65);
-`;
-
 const NewPostBox = styled.div`
   width: 800px;
   margin: auto;
@@ -188,16 +181,12 @@ const NewPost = () => {
     <NewPostContext.Provider
       value={{ handleImagePreview, handleSubmitFile, handleTitle }}
     >
-      <BackgroundDiv
-        onClick={(e) => {
-          dispatch({ comp: 'main' });
-        }}
-      >
+      <Filter>
         <NewPostBox onClick={(e) => e.stopPropagation()}>
           <ImagePreview value={state.imagePreview}></ImagePreview>
           <ColumnFlexSideBox></ColumnFlexSideBox>
         </NewPostBox>
-      </BackgroundDiv>
+      </Filter>
     </NewPostContext.Provider>
   );
 };
